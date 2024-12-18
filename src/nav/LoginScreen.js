@@ -30,7 +30,7 @@ export default function LoginScreen(props) {
       autoComplete="off">
       {errMsg &&
         <Form.Item>
-          <Alert message={errMsg} type="error" />
+          <Alert message={errMsg} type="ERROR" />
         </Form.Item>
       }
 

@@ -80,12 +80,11 @@ function FinanceScreen() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header className="add-item-container"> 
         <Spin spinning={isLoading}>
           <Typography.Title>
             จำนวนเงินปัจจุบัน {summaryAmount} บาท
           </Typography.Title>
-
           <AddItem onItemAdded={handleAddItem} />
           <Divider>บันทึก รายรับ - รายจ่าย</Divider>
           <TransactionList

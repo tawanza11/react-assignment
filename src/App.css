@@ -1,7 +1,12 @@
 .App {
   text-align: center
 }
-
+.add-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* เพื่อให้มีระยะห่างจากเนื้อหาข้างบน */
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

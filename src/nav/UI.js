@@ -57,7 +57,7 @@ const UI = () => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: '16px', padding: '10px', background: colorBgContainer }}>
+        <Content style={{ margin: '16px', padding: '24px', background: colorBgContainer }}>
           <Breadcrumb style={{ marginBottom: '16px' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>{selectedMenu === '1' ? 'Option 1' : 'Other'}</Breadcrumb.Item>
