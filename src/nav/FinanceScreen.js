@@ -1,9 +1,9 @@
-import './App.css';
-import TransactionList from "./components/TransactionList"
+import '../App.css';
+import TransactionList from "../components/TransactionList"
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Divider } from 'antd';
-import AddItem from './components/AddItem';
+import AddItem from '../components/AddItem';
 import { Spin, Typography } from 'antd';
 import axios from 'axios'
 

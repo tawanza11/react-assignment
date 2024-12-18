@@ -38,7 +38,7 @@ export default function TransactionList(props) {
         <Space size="middle">
           <Button 
             type="primary" 
-            shape="circle" 
+            shape="round" 
             icon={<EditOutlined />} 
             onClick={() => handleEdit(record)} />
           

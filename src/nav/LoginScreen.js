@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Form, Input, Alert } from 'antd';
 import axios from 'axios'
-
+import '../App.css';
 const URL_AUTH = "/api/auth/local"
 
 export default function LoginScreen(props) {
@@ -24,6 +24,7 @@ export default function LoginScreen(props) {
   }
 
   return (
+    <div className="App-header"> 
     <Form
       onFinish={handleLogin}
       autoComplete="off">
@@ -55,5 +56,6 @@ export default function LoginScreen(props) {
         </Button>
       </Form.Item>
     </Form>
+    </div>
   )
 }
