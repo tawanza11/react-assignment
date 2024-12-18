@@ -8,16 +8,15 @@ import FinanceScreen from './FinanceScreen';
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337"
 
 function App() {
-  const handleLoginSuccess = () => { alert("Login Success!!!") }
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  return (  
-    <div className="App">
+
+  const handleLoginSuccess = () => setIsAuthenticated(true)
+    
+  return (
+    <div className="App"> 
       <header className="App-header">
-      {!isAuthenticated ? (
-          <LoginScreen onLoginSuccess={handleLoginSuccess} />
-        ) : (
-          <FinanceScreen />
-        )}
+        {!isAuthenticated  && <LoginScreen onLoginSuccess={handleLoginSuccess} />}
+        {isAuthenticated && <FinanceScreen/>}
       </header>
     </div>
   );
