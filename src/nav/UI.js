@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import FinanceScreen from "./FinanceScreen";
-import MyChart from "./chart";
+import IncomeExpenseChart from "./chart";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -85,7 +85,7 @@ const UI = () => {
           {selectedMenu === "1" ? (
             <FinanceScreen />
           ) : selectedMenu === "2" ? (
-            <MyChart />
+            <IncomeExpenseChart />
           ) : (
             <div>กรุณาเลือกเมนูอื่น</div>
           )}

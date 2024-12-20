@@ -2,7 +2,7 @@ import React from "react"
 import { Button, Table, Space, Tag, Popconfirm, Modal, Form, Input } from "antd"
 import { DeleteOutlined, BugOutlined, EditOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
-
+import axios from 'axios';
 export default function TransactionList(props) {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -14,9 +14,25 @@ export default function TransactionList(props) {
   };
 
   const handleSave = (values) => {
-    props.onRowEdited(editingRecord.id, values);
-    setIsModalOpen(false);
-    setEditingRecord(null);
+    try {
+      // ส่งข้อมูลที่แก้ไขไปยัง Strapi API
+      await axios.put(`http://localhost:1337/api/txactions/${editingRecord.id}`, {
+        data: {
+          action_datetime: values.action_datetime,
+          type: values.type,
+          amount: values.amount,
+          note: values.note,
+        }
+      });
+  
+      // เมื่ออัปเดตสำเร็จ ให้ปิด modal
+      props.onRowEdited(editingRecord.id, values); // เรียกฟังก์ชันจาก props เพื่ออัปเดตข้อมูลใน Table
+      setIsModalOpen(false);
+      setEditingRecord(null);
+  
+    } catch (error) {
+      console.error('Error updating transaction:', error);
+    }
   };
 
   const columns = [

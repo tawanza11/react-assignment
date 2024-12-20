@@ -1,28 +1,43 @@
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Chart } from 'chart.js/auto';
+import axios from 'axios';
 
-function MyChart() {
-  const [chartData, setChartData] = useState({ income: 0, expense: 0 });
-  const chartInstance = useRef(null);
+export default function IncomeExpenseChart() {
+  const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     // ดึงข้อมูลจาก Strapi API
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:1337/api/txactions');
+        const response = await axios.get('http://localhost:1337/api/txactions'); // URL ของ Strapi API
         const transactions = response.data.data;
 
-        // แยกข้อมูลรายรับและรายจ่าย
-        const income = transactions
-          .filter((item) => item.attributes.type === 'Income')
-          .reduce((sum, item) => sum + item.attributes.amount, 0);
+        // สรุปข้อมูลรายรับรายจ่าย
+        const summary = transactions.reduce(
+          (acc, transaction) => {
+            if (transaction.attributes.type === 'income') {
+              acc.income += transaction.attributes.amount;
+            } else if (transaction.attributes.type === 'expense') {
+              acc.expense += transaction.attributes.amount;
+            }
+            return acc;
+          },
+          { income: 0, expense: 0 } // ค่าเริ่มต้น
+        );
 
-        const expense = transactions
-          .filter((item) => item.attributes.type === 'Expense')
-          .reduce((sum, item) => sum + item.attributes.amount, 0);
-
-        setChartData({ income, expense });
+        // เก็บข้อมูลใน state
+        setChartData({
+          labels: ['Income', 'Expense'], // แกน x
+          datasets: [
+            {
+              label: 'Amount',
+              data: [summary.income, summary.expense], // รายรับและรายจ่าย
+              backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+              borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+              borderWidth: 1,
+            },
+          ],
+        });
       } catch (error) {
         console.error('Error fetching data from Strapi:', error);
       }
@@ -32,61 +47,32 @@ function MyChart() {
   }, []);
 
   useEffect(() => {
-    if (chartData.income || chartData.expense) {
-      const ctx = document.getElementById('myChart').getContext('2d');
-
-      // ทำลายกราฟเก่าถ้ามี
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-
-      // สร้างกราฟใหม่
-      chartInstance.current = new Chart(ctx, {
-        type: 'pie', // เปลี่ยนเป็น pie หรือ bar ตามต้องการ
-        data: {
-          labels: ['Income', 'Expense'],
-          datasets: [
-            {
-              label: 'Income vs Expense',
-              data: [chartData.income, chartData.expense],
-              backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
-              borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-              borderWidth: 1,
-            },
-          ],
-        },
+    if (chartData) {
+      // สร้างกราฟเมื่อมีข้อมูล
+      const ctx = document.getElementById('incomeExpenseChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'bar', // ประเภทกราฟ
+        data: chartData,
         options: {
           responsive: true,
           plugins: {
             legend: {
-              position: 'top',
+              display: true,
             },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const value = context.raw;
-                  return `${context.label}: ${value.toLocaleString()} THB`;
-                },
-              },
+          },
+          scales: {
+            y: {
+              beginAtZero: true, // เริ่มจาก 0
             },
           },
         },
       });
-    }
 
-    // ทำลายกราฟเมื่อ component ถูก unmount
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-    };
+      return () => {
+        chart.destroy(); // ลบกราฟเก่าเมื่อ component ถูก unmount
+      };
+    }
   }, [chartData]);
 
-  return (
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
-  );
+  return <canvas id="incomeExpenseChart"></canvas>; // พื้นที่สำหรับกราฟ
 }
-
-export default MyChart;
