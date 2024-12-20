@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import {
   DesktopOutlined,
-  FileOutlined,
   MenuOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import FinanceScreen from "./FinanceScreen";
-
+import MyChart from "./chart";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -34,7 +32,7 @@ const items = [
 
 const UI = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState("1"); // State เก็บเมนูที่เลือก
+  const [selectedMenu, setSelectedMenu] = useState("0"); // State เก็บเมนูที่เลือก
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -75,13 +73,19 @@ const UI = () => {
           <Breadcrumb style={{ marginBottom: "16px" }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>
-              {selectedMenu === "1" ? "TABLE" : "Other"}
+              {selectedMenu === "1"
+                ? "TABLE"
+                : selectedMenu === "2"
+                ? "Chart"
+                : "Other"}
             </Breadcrumb.Item>
           </Breadcrumb>
 
           {/* แสดง Table เมื่อเลือก Option 1 */}
           {selectedMenu === "1" ? (
             <FinanceScreen />
+          ) : selectedMenu === "2" ? (
+            <MyChart />
           ) : (
             <div>กรุณาเลือกเมนูอื่น</div>
           )}

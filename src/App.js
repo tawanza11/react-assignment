@@ -20,39 +20,22 @@ function App() {
         path="/login"
         element={
           isAuthenticated ? (
-            <Navigate to="/" replace /> // ถ้าล็อกอินแล้ว ให้เปลี่ยนเส้นทางไปหน้า UI
+            <Navigate to="/" replace /> //ไปui
           ) : (
             <LoginScreen onLoginSuccess={handleLoginSuccess} />
           )
         }
       />
-
-      {/* หน้า UI */}
       <Route
         path="/"
         element={
           isAuthenticated ? (
             <UI />
           ) : (
-            <Navigate to="/login" replace /> // ถ้ายังไม่ได้ล็อกอิน ให้เปลี่ยนเส้นทางไปหน้า Login
-          )
-        }
-      />
-
-      {/* หน้าอื่น ๆ เช่น FinanceScreen */}
-      <Route
-        path="/finance"
-        element={
-          isAuthenticated ? (
-            <FinanceScreen />
-          ) : (
             <Navigate to="/login" replace />
           )
         }
       />
-
-      {/* กรณี URL ไม่ถูกต้อง */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   </Router>
   );
