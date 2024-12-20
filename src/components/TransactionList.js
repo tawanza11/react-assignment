@@ -1,8 +1,9 @@
-import React from "react"
-import { Button, Table, Space, Tag, Popconfirm, Modal, Form, Input } from "antd"
+import React from "react";
+import { Button, Table, Space, Tag, Popconfirm, Modal, Form, Input } from "antd";
 import { DeleteOutlined, BugOutlined, EditOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
-import axios from 'axios';
+import axios from 'axios';  // เพิ่ม axios เข้ามาที่นี่
+
 export default function TransactionList(props) {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -13,7 +14,8 @@ export default function TransactionList(props) {
     setIsModalOpen(true);
   };
 
-  const handleSave = (values) => {
+  // ใช้ async/await ใน handleSave เพื่อจัดการการอัปเดตข้อมูลไปยัง Strapi
+  const handleSave = async (values) => {
     try {
       // ส่งข้อมูลที่แก้ไขไปยัง Strapi API
       await axios.put(`http://localhost:1337/api/txactions/${editingRecord.id}`, {
@@ -24,12 +26,12 @@ export default function TransactionList(props) {
           note: values.note,
         }
       });
-  
-      // เมื่ออัปเดตสำเร็จ ให้ปิด modal
+
+      // เมื่ออัปเดตสำเร็จ ให้ปิด modal และอัปเดตข้อมูลใน Table
       props.onRowEdited(editingRecord.id, values); // เรียกฟังก์ชันจาก props เพื่ออัปเดตข้อมูลใน Table
       setIsModalOpen(false);
       setEditingRecord(null);
-  
+
     } catch (error) {
       console.error('Error updating transaction:', error);
     }
@@ -112,31 +114,27 @@ export default function TransactionList(props) {
             <Form.Item
               name="action_datetime"
               label="Date-Time"
-              rules={[{ required: true, message: "Please input the date and time!" }]}
-            >
+              rules={[{ required: true, message: "Please input the date and time!" }]}>
               <Input type="datetime-local" />
             </Form.Item>
 
             <Form.Item
               name="type"
               label="Type"
-              rules={[{ required: true, message: "Please select a type!" }]}
-            >
+              rules={[{ required: true, message: "Please select a type!" }]}>
               <Input />
             </Form.Item>
 
             <Form.Item
               name="amount"
               label="Amount"
-              rules={[{ required: true, message: "Please input the amount!" }]}
-            >
+              rules={[{ required: true, message: "Please input the amount!" }]}>
               <Input type="number" />
             </Form.Item>
 
             <Form.Item
               name="note"
-              label="Note"
-            >
+              label="Note">
               <Input.TextArea />
             </Form.Item>
           </Form>
