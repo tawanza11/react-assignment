@@ -27,10 +27,12 @@ export default function TransactionList(props) {
         }
       });
 
-      // เมื่ออัปเดตสำเร็จ ให้ปิด modal และอัปเดตข้อมูลใน Table
-      props.onRowEdited(editingRecord.id, values); // เรียกฟังก์ชันจาก props เพื่ออัปเดตข้อมูลใน Table
+      // เมื่ออัปเดตสำเร็จ ให้ปิด modal
       setIsModalOpen(false);
       setEditingRecord(null);
+
+      // เรียกฟังก์ชันที่ใช้ดึงข้อมูลใหม่จาก API เพื่อรีเฟรชข้อมูลในตาราง
+      props.onDataRefreshed(); // เรียกฟังก์ชันจาก props เพื่อรีเฟรชข้อมูลใน table
 
     } catch (error) {
       console.error('Error updating transaction:', error);
@@ -114,27 +116,27 @@ export default function TransactionList(props) {
             <Form.Item
               name="action_datetime"
               label="Date-Time"
-              rules={[{ required: true, message: "Please input the date and time!" }]}>
+              rules={[{ required: true, message: "Please input the date and time!" }]} >
               <Input type="datetime-local" />
             </Form.Item>
 
             <Form.Item
               name="type"
               label="Type"
-              rules={[{ required: true, message: "Please select a type!" }]}>
+              rules={[{ required: true, message: "Please select a type!" }]} >
               <Input />
             </Form.Item>
 
             <Form.Item
               name="amount"
               label="Amount"
-              rules={[{ required: true, message: "Please input the amount!" }]}>
+              rules={[{ required: true, message: "Please input the amount!" }]} >
               <Input type="number" />
             </Form.Item>
 
             <Form.Item
               name="note"
-              label="Note">
+              label="Note" >
               <Input.TextArea />
             </Form.Item>
           </Form>
