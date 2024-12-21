@@ -44,7 +44,7 @@ export default function LoginScreen(props) {
 
   return (
     <div className="App-header">
-      <img src="/giphy.webp" alt="Logo" className="login-logo" />
+      <img src="/giphy.webp" alt="Logo" style={{ width: '400px', marginBottom: '20px'}} />
       <Form onFinish={handleLogin} autoComplete="off">
         {errMsg && (
           <Form.Item>
