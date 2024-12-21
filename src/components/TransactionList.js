@@ -8,7 +8,7 @@ import {
   Modal,
   Form,
   Input,
-  Select,
+  Select
 } from "antd";
 import { DeleteOutlined, BugOutlined, EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -21,33 +21,33 @@ export default function TransactionList(props) {
   const handleEdit = (record) => {
     setEditingRecord(record);
     setIsModalOpen(true);
+    handleSave(record);
+    
   };
 
   // ใช้ async/await ใน handleSave เพื่อจัดการการอัปเดตข้อมูลไปยัง Strapi
   const handleSave = async (values) => {
     try {
-      await axios.put(
-        `http://localhost:1337/api/txactions/${editingRecord.id}`,
-        {
-          data: {
-            action_datetime: values.action_datetime,
-            type: values.type,
-            amount: values.amount,
-            note: values.note,
-          },
+      await axios.put(`http://localhost:1337/api/txactions/${editingRecord.id}`, {
+        data: {
+          action_datetime: values.action_datetime,
+          type: values.type,
+          amount: values.amount,
+          note: values.note,
         }
-      );
-
+      });
+  
       // เมื่ออัปเดตสำเร็จให้ปิด Modal
       setIsModalOpen(false);
       setEditingRecord(null);
-
+  
       // เรียกฟังก์ชันให้ดึงข้อมูลใหม่
       props.onDataRefreshed(); // ดึงข้อมูลใหม่เพื่อรีเฟรชข้อมูลใน table
     } catch (error) {
-      console.error("Error updating transaction:", error);
+      console.error('Error updating transaction:', error);
     }
   };
+  
 
   const columns = [
     {
